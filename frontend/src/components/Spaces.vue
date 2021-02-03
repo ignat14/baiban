@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Spaces</h1>
     <ul v-for="space in spaces" :key="space.id">
       <li>
         <span>{{ space.name }}</span>
