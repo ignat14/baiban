@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Set docker e2e network
+        run: docker network create baiban_e2e_tests
       - name: Build the docker-comopse stack
         run: docker-compose -f docker-e2e-tests.yml up --exit-code-from cypress
 
