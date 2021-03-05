@@ -14,7 +14,7 @@ services:
       - db
     command: /bin/bash -c "pip install -r requirements_dev.txt; python tasks.py"
     env_file:
-      - ./config/env_vars/db/dev_db.env
+      - ./config/env_vars/db/dev_e2e_db.env
     environment:
       - ENV=dev
     tty: true
@@ -56,7 +56,7 @@ services:
     environment:
       - CYPRESS_baseUrl=http://nginx:80
     entrypoint:
-      /scripts/wait-for-it.sh frontend:8080 -- cypress open
+      /scripts/wait-for-it.sh frontend:8080 -- cypress run
     working_dir: '/e2e'
 
 networks:
