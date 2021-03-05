@@ -15,7 +15,8 @@ services:
     command: /bin/bash -c "pip install -r requirements_dev.txt; python tasks.py"
     env_file:
       - ./config/env_vars/db/dev_db.env
-      - .env
+    environment:
+      - ENV=dev
     tty: true
 
   frontend:
