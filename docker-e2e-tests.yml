@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    image: baiban_web
+    image: baiban_e2e_web
     build:
       context: .
       dockerfile: Dockerfile
@@ -19,23 +19,17 @@ services:
     tty: true
 
   frontend:
-    image: baiban_frontend
+    image: baiban_e2e_frontend
     build:
       context: frontend
     volumes:
       - ./frontend:/srv/client
-    expose:
-      - "3000"
     command: /bin/bash -c "npm i; npm run serve"
 
   db:
     image: postgres:13
     env_file:
-      - ./config/env_vars/db/dev_db.env
-    ports:
-      - '5432:5432'
-    volumes:
-      - baiban_db:/var/lib/postgresql/data
+      - ./config/env_vars/db/dev_e2e_db.env
 
   nginx:
     image: nginx:1.17.4
@@ -46,10 +40,25 @@ services:
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./media:/media:ro
       - ./static:/static:ro
-    ports:
-      - "8000:80"
     command:
       /bin/bash -c "nginx -g 'daemon off;'"
 
-volumes:
-  baiban_db:
+  cypress:
+    image: cypress/included:3.2.0
+    volumes:
+      - ./frontend/tests/e2e:/e2e
+      - ./scripts:/scripts
+    depends_on:
+      - web
+      - frontend
+      - nginx
+    environment:
+      - CYPRESS_baseUrl=http://nginx:80
+    entrypoint:
+      /scripts/wait-for-it.sh frontend:8080 -- cypress open
+    working_dir: '/e2e'
+
+networks:
+  default:
+    external:
+      name: baiban_e2e_tests

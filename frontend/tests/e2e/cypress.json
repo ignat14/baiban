@@ -1,6 +1,6 @@
 {
   "baseUrl": "http://127.0.0.1:8000",
-  "pluginsFile": "tests/e2e/plugins/index.js",
+  "pluginsFile": "plugins/index.js",
   "viewportWidth": 1280,
   "viewportHeight": 900
 }

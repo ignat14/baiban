@@ -1,0 +1,1 @@
+docker-compose -f docker-e2e-tests.yml up --exit-code-from cypress
